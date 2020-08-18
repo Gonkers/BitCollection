@@ -2,7 +2,7 @@
 Inspired by VitVector32 and BitArray, I created something of a cross between the two. 👹
 
 > I've got a bad feeling about this.
- - Princess Leia, Obi-Wan Kenobi, Anakin Skywalker, Luke Skywalker, C-3PO, Han Solo, BB-8, Lando Calrissian
+> - Princess Leia, Obi-Wan Kenobi, Anakin Skywalker, Luke Skywalker, C-3PO, Han Solo, BB-8, Lando Calrissian
 
 Pull requests welcome, use at your own risk, the Star Wars universe has warned you.
 
