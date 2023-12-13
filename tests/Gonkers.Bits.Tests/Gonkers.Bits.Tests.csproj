@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Gonkers.BitCollection\Gonkers.Bits.csproj" />
+    <ProjectReference Include="..\..\src\Gonkers.Bits\Gonkers.Bits.csproj" />
   </ItemGroup>
 
 </Project>
