@@ -19,11 +19,13 @@ public class BitCollection : IReadOnlyList<bool>
         _bytes = bytes.Length <= BytesInAnInt64 ? (new byte[BytesInAnInt64]) : (new byte[bytes.Length]);
         bytes.CopyTo(_bytes);
         Count = bytes.Length * BitsInAByte;
+        TotalBytes = bytes.Length;
     }
 
     private readonly byte[] _bytes;
 
     public int Count { get; }
+    public int TotalBytes { get; }
 
     public int SliceInt32(int start, int length)
     {
@@ -52,7 +54,7 @@ public class BitCollection : IReadOnlyList<bool>
         return unchecked((int)bitHolder);
     }
 
-    public ReadOnlySpan<byte> AsReadOnlySpan() => new ReadOnlySpan<byte>(_bytes);
+    public ReadOnlySpan<byte> AsReadOnlySpan() => new(_bytes);
 
     private int MaxIndex => Count - 1;
 
@@ -89,7 +91,7 @@ public class BitCollection : IReadOnlyList<bool>
         }
     }
 
-    public string ToBase64String() => Convert.ToBase64String(_bytes);
+    public string ToBase64String() => Convert.ToBase64String(new ReadOnlySpan<byte>(_bytes, 0, TotalBytes));
     public override string ToString() => ToBase64String();
     public IEnumerator<bool> GetEnumerator() => new BitCollectionEnumerator(this);
     IEnumerator IEnumerable.GetEnumerator() => new BitCollectionEnumerator(this);

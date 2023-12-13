@@ -1,10 +1,43 @@
-﻿namespace Gonkers.Bits.Tests;
+﻿using System.Text;
+
+namespace Gonkers.Bits.Tests;
 
 public class BitCollectionTests
 {
     [SetUp]
     public void Setup()
     {
+    }
+
+    [Test]
+    public void WhenCalculatingTotalBytes_ThenIgnoreTheInternalBufferArraySize()
+    {
+        var smallCollection = new BitCollection(Encoding.UTF8.GetBytes("abc"));
+        Assert.That(smallCollection.TotalBytes, Is.EqualTo(3));
+    }
+
+
+    [Test]
+    public void WhenRunningToString_ThenReturnABase64EncodedValue()
+    {
+        var bigCollection = new BitCollection([
+            156, 96, 217, 246, 167, 187, 102, 225, 58, 161, 245, 162,
+            161, 148, 114, 76, 43, 9, 165, 58, 167, 130, 59, 132, 215,
+            38, 187, 183, 204, 56, 244, 125, 173, 76, 114, 207, 222, 241,
+            198, 233, 158, 1, 177, 115, 107, 171
+        ]);
+        var smallCollection = new BitCollection(Encoding.UTF8.GetBytes("Hello"));
+
+        var bigBase64 = bigCollection.ToString();
+        var smallBase64 = smallCollection.ToString();
+
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(bigBase64, Is.EqualTo("nGDZ9qe7ZuE6ofWioZRyTCsJpTqngjuE1ya7t8w49H2tTHLP3vHG6Z4BsXNrqw=="));
+            Assert.That(smallBase64, Is.EqualTo("SGVsbG8="));
+        });
+
     }
 
     [Test]
