@@ -3,10 +3,16 @@
 public class BitCollection : ReadOnlyBitCollection
 {
     public BitCollection(string base64) : base(base64) { }
-
     public BitCollection(ReadOnlySpan<byte> bytes) : base(bytes) { }
-
     public BitCollection(BitCollection other) : base(other) { }
+    public BitCollection(Guid value) : base(value) { }
+    public BitCollection(ulong value) : base(value) { }
+    public BitCollection(long value) : base(value) { }
+    public BitCollection(uint value) : base(value) { }
+    public BitCollection(int value) : base(value) { }
+    public BitCollection(ushort value) : base(value) { }
+    public BitCollection(short value) : base(value) { }
+    public BitCollection(byte value) : base(value) { }
 
     new public bool this[int index]
     {

@@ -20,7 +20,5 @@ public class BitCollectionTests
 
             Assert.That(collection.SliceInt32(0, 16), Is.EqualTo(65535));
         });
-
-
     }
 }

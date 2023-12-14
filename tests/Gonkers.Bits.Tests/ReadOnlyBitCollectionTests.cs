@@ -203,4 +203,41 @@ public class ReadOnlyBitCollectionTests
             }
         });
     }
+
+    [Test]
+    public void WhenUsingANumericConstructor_ThenTurnThatIntoABitCollection()
+    {
+        var byteSource = new ReadOnlyBitCollection(byte.MaxValue);
+        var shortSource = new ReadOnlyBitCollection((short)-1);
+        var ushortSource = new ReadOnlyBitCollection(ushort.MaxValue);
+        var intSource = new ReadOnlyBitCollection((int)-1);
+        var uintSource = new ReadOnlyBitCollection(uint.MaxValue);
+        var longSource = new ReadOnlyBitCollection((long)-1);
+        var ulongSource = new ReadOnlyBitCollection(ulong.MaxValue);
+        var guidSource = new ReadOnlyBitCollection(Guid.Parse("ffffffff-ffff-ffff-ffff-ffffffffffff"));
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(byteSource.Count, Is.EqualTo(8));
+            Assert.That(shortSource.Count, Is.EqualTo(16));
+            Assert.That(ushortSource.Count, Is.EqualTo(16));
+            Assert.That(intSource.Count, Is.EqualTo(32));
+            Assert.That(uintSource.Count, Is.EqualTo(32));
+            Assert.That(longSource.Count, Is.EqualTo(64));
+            Assert.That(ulongSource.Count, Is.EqualTo(64));
+            Assert.That(guidSource.Count, Is.EqualTo(128));
+
+            Assert.That(byteSource, Is.All.True);
+            Assert.That(shortSource, Is.All.True);
+            Assert.That(ushortSource, Is.All.True);
+            Assert.That(intSource, Is.All.True);
+            Assert.That(uintSource, Is.All.True);
+            Assert.That(longSource, Is.All.True);
+            Assert.That(ulongSource, Is.All.True);
+            Assert.That(guidSource, Is.All.True);
+        });
+
+
+
+    }
 }

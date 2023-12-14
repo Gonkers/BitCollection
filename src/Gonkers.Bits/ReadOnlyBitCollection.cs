@@ -23,6 +23,14 @@ public class ReadOnlyBitCollection : IReadOnlyList<bool>, IEquatable<ReadOnlyBit
     }
 
     public ReadOnlyBitCollection(ReadOnlyBitCollection other) : this(other._bytes) { }
+    public ReadOnlyBitCollection(Guid value) : this(value.ToByteArray()) { }
+    public ReadOnlyBitCollection(ulong value) : this(BitConverter.GetBytes(value)) { }
+    public ReadOnlyBitCollection(long value) : this(BitConverter.GetBytes(value)) { }
+    public ReadOnlyBitCollection(uint value) : this(BitConverter.GetBytes(value)) { }
+    public ReadOnlyBitCollection(int value) : this(BitConverter.GetBytes(value)) { }
+    public ReadOnlyBitCollection(ushort value) : this(BitConverter.GetBytes(value)) { }
+    public ReadOnlyBitCollection(short value) : this(BitConverter.GetBytes(value)) { }
+    public ReadOnlyBitCollection(byte value) : this([value]) { }
 
     protected readonly byte[] _bytes;
 
