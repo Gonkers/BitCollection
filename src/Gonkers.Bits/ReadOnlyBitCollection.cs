@@ -2,7 +2,7 @@
 
 namespace Gonkers.Bits;
 
-public class ReadOnlyBitCollection : IReadOnlyList<bool>
+public class ReadOnlyBitCollection : IReadOnlyList<bool>, IEquatable<ReadOnlyBitCollection>
 {
     internal const int
         BitsInAByte = 8,
@@ -22,10 +22,12 @@ public class ReadOnlyBitCollection : IReadOnlyList<bool>
         TotalBytes = bytes.Length;
     }
 
-    private readonly byte[] _bytes;
+    public ReadOnlyBitCollection(ReadOnlyBitCollection other) : this(other._bytes) { }
 
-    public int Count { get; }
-    public int TotalBytes { get; }
+    protected readonly byte[] _bytes;
+
+    public int Count { get; protected set; }
+    public int TotalBytes { get; protected set; }
 
     public int SliceInt32(int start, int length)
     {
@@ -56,7 +58,7 @@ public class ReadOnlyBitCollection : IReadOnlyList<bool>
 
     public ReadOnlySpan<byte> AsReadOnlySpan() => new(_bytes);
 
-    private int MaxIndex => Count - 1;
+    protected int MaxIndex => Count - 1;
 
     public bool this[int index]
     {
@@ -95,4 +97,24 @@ public class ReadOnlyBitCollection : IReadOnlyList<bool>
     public override string ToString() => ToBase64String();
     public IEnumerator<bool> GetEnumerator() => new BitCollectionEnumerator(this);
     IEnumerator IEnumerable.GetEnumerator() => new BitCollectionEnumerator(this);
+
+    public bool Equals(ReadOnlyBitCollection? other)
+    {
+        if (other is null)
+            return false;
+
+        if (ReferenceEquals(this, other))
+            return true;
+
+        return _bytes.SequenceEqual(other._bytes);
+    }
+
+    public override int GetHashCode() => _bytes.GetHashCode();
+
+    public static bool operator ==(ReadOnlyBitCollection left, ReadOnlyBitCollection right) =>
+        left is not null && right is not null && left.Equals(right);
+
+    public static bool operator !=(ReadOnlyBitCollection left, ReadOnlyBitCollection right) => !(left == right);
+
+    public override bool Equals(object? obj) => Equals(obj as ReadOnlyBitCollection);
 }

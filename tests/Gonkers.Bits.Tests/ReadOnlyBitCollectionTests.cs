@@ -2,11 +2,46 @@
 
 namespace Gonkers.Bits.Tests;
 
+[TestFixture]
 public class ReadOnlyBitCollectionTests
 {
     [SetUp]
     public void Setup()
     {
+    }
+
+    [Test]
+    public void WhenCopyingObject_ThenMakeSureItIsADeepCopy()
+    {
+        var collection = new ReadOnlyBitCollection([4, 44]);
+        var copy = new ReadOnlyBitCollection(collection);
+        Assert.Multiple(() =>
+        {
+            Assert.That(ReferenceEquals(copy, collection), Is.False);
+            Assert.That(collection, Is.EqualTo(copy));
+        });
+    }
+
+    [Test]
+    public void WhenComparingToOther_ThenCheckIfOtherIsEqual()
+    {
+        var oddCollection_1a = new ReadOnlyBitCollection([1, 3, 5, 7, 9]);
+        var oddCollection_1b = oddCollection_1a;
+        var oddCollection_2 = new ReadOnlyBitCollection([1, 3, 5, 7, 9]);
+        var evenCollection = new ReadOnlyBitCollection([2, 4, 6, 8]);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(oddCollection_1a.Equals(oddCollection_1b));
+            Assert.That(oddCollection_1a.Equals(oddCollection_2));
+
+            Assert.That(!oddCollection_1a.Equals(default));
+            Assert.That(!oddCollection_1a.Equals(evenCollection));
+
+            Assert.That(oddCollection_1a == oddCollection_1b);
+            Assert.That(oddCollection_1a == oddCollection_2);
+            Assert.That(oddCollection_1a != evenCollection);
+        });
     }
 
     [Test]

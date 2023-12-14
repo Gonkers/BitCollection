@@ -1,5 +1,6 @@
 namespace Gonkers.Bits.Tests;
 
+[TestFixture]
 public class BitFlagsTests
 {
     [SetUp]
