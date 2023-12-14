@@ -16,7 +16,7 @@ internal sealed class BitCollectionBuilder
     public Range Add(byte @byte) => Add(@byte, byte.MaxValue);
     public Range Add(short @short) => Add(@short, ushort.MaxValue);
 
-    public BitCollection Build()
+    public ReadOnlyBitCollection Build()
     {
         var bytes = new List<byte>();
         ulong bitBuffer = 0;
@@ -26,18 +26,18 @@ internal sealed class BitCollectionBuilder
             bitBuffer ^= _map[i].bits << bitBufferLen;
             bitBufferLen += _map[i].bitCount;
 
-            while (bitBufferLen >= BitCollection.BitsInAByte)
+            while (bitBufferLen >= ReadOnlyBitCollection.BitsInAByte)
             {
                 bytes.Add(unchecked((byte)bitBuffer));
-                bitBuffer >>= BitCollection.BitsInAByte;
-                bitBufferLen -= BitCollection.BitsInAByte;
+                bitBuffer >>= ReadOnlyBitCollection.BitsInAByte;
+                bitBufferLen -= ReadOnlyBitCollection.BitsInAByte;
             }
         }
 
         if (bitBufferLen > 0) // if bits remain in the buffer, flush
             bytes.Add(unchecked((byte)(bitBuffer)));
 
-        return new BitCollection(bytes.ToArray());
+        return new ReadOnlyBitCollection(bytes.ToArray());
     }
 
     // The bitmask must be right aligned, any 1s after a 0 will be ignored. 00001111

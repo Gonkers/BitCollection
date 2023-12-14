@@ -2,7 +2,7 @@
 
 namespace Gonkers.Bits.Tests;
 
-public class BitCollectionTests
+public class ReadOnlyBitCollectionTests
 {
     [SetUp]
     public void Setup()
@@ -12,7 +12,7 @@ public class BitCollectionTests
     [Test]
     public void WhenCalculatingTotalBytes_ThenIgnoreTheInternalBufferArraySize()
     {
-        var smallCollection = new BitCollection(Encoding.UTF8.GetBytes("abc"));
+        var smallCollection = new ReadOnlyBitCollection(Encoding.UTF8.GetBytes("abc"));
         Assert.That(smallCollection.TotalBytes, Is.EqualTo(3));
     }
 
@@ -20,13 +20,13 @@ public class BitCollectionTests
     [Test]
     public void WhenRunningToString_ThenReturnABase64EncodedValue()
     {
-        var bigCollection = new BitCollection([
+        var bigCollection = new ReadOnlyBitCollection([
             156, 96, 217, 246, 167, 187, 102, 225, 58, 161, 245, 162,
             161, 148, 114, 76, 43, 9, 165, 58, 167, 130, 59, 132, 215,
             38, 187, 183, 204, 56, 244, 125, 173, 76, 114, 207, 222, 241,
             198, 233, 158, 1, 177, 115, 107, 171
         ]);
-        var smallCollection = new BitCollection(Encoding.UTF8.GetBytes("Hello"));
+        var smallCollection = new ReadOnlyBitCollection(Encoding.UTF8.GetBytes("Hello"));
 
         var bigBase64 = bigCollection.ToString();
         var smallBase64 = smallCollection.ToString();
@@ -43,9 +43,9 @@ public class BitCollectionTests
     [Test]
     public void WhenAllBitsAreOn_ThenAllItemsAreTrue()
     {
-        var collection1 = new BitCollection([255]);
-        var collection2 = new BitCollection([255, 255]);
-        var collection3 = new BitCollection([255, 255, 255]);
+        var collection1 = new ReadOnlyBitCollection([255]);
+        var collection2 = new ReadOnlyBitCollection([255, 255]);
+        var collection3 = new ReadOnlyBitCollection([255, 255, 255]);
 
         var collection = collection1.Concat(collection2).Concat(collection3);
 
@@ -61,9 +61,9 @@ public class BitCollectionTests
     [Test]
     public void WhenAllBitsAreOff_ThenAllItemsAreFalse()
     {
-        var collection1 = new BitCollection([0]);
-        var collection2 = new BitCollection([0, 0]);
-        var collection3 = new BitCollection([0, 0, 0]);
+        var collection1 = new ReadOnlyBitCollection([0]);
+        var collection2 = new ReadOnlyBitCollection([0, 0]);
+        var collection3 = new ReadOnlyBitCollection([0, 0, 0]);
 
         Assert.Multiple(() =>
         {
@@ -77,7 +77,7 @@ public class BitCollectionTests
     public void WhenCreatedWithBase64String_ThenConvertToBits()
     {
         var base64 = Convert.ToBase64String([255, 255, 255]);
-        var collection = new BitCollection(base64);
+        var collection = new ReadOnlyBitCollection(base64);
 
         Assert.That(collection, Is.All.True);
     }
@@ -85,7 +85,7 @@ public class BitCollectionTests
     [Test]
     public void WhenGettingASliceOnASmallArray_ThenReturnAnInt()
     {
-        var collection = new BitCollection([255, 255, 0, 0]);
+        var collection = new ReadOnlyBitCollection([255, 255, 0, 0]);
 
         Assert.Multiple(() =>
         {
@@ -98,7 +98,7 @@ public class BitCollectionTests
     [Test]
     public void WhenGettingASliceOnALargeArray_ThenReturnAnInt()
     {
-        var collection = new BitCollection([
+        var collection = new ReadOnlyBitCollection([
             0b1111_1111, // 255 0
             0b1111_1111, // 255 8
             0b1111_1111, // 255 16
@@ -121,7 +121,7 @@ public class BitCollectionTests
     [Test]
     public void WhenGettingASliceOnAnOversizedArray_ThenReturnAnInt()
     {
-        var collection = new BitCollection([
+        var collection = new ReadOnlyBitCollection([
             156, 96, 217, 246, 167, 187, 102, 225, 58, 161, 245, 162,
             161, 148, 114, 76, 43, 9, 165, 58, 167, 130, 59, 132, 215,
             0b1111_1111, // 255 200
@@ -154,7 +154,7 @@ public class BitCollectionTests
     [Test]
     public void WhenReferencingBitsByIndex_ThenReturnABoolean()
     {
-        var collection = new BitCollection([
+        var collection = new ReadOnlyBitCollection([
             0b_1010_1010,
             0b_1010_1010,
             0b_1010_1010,

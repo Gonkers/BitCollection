@@ -4,13 +4,13 @@ namespace Gonkers.Bits;
 
 public class BitCollectionEnumerator : IEnumerator<bool>
 {
-    public BitCollectionEnumerator(BitCollection bitCollection)
+    public BitCollectionEnumerator(ReadOnlyBitCollection bitCollection)
     {
         _bitCollection = bitCollection;
         _index = -1;
     }
 
-    private readonly BitCollection _bitCollection;
+    private readonly ReadOnlyBitCollection _bitCollection;
     private int _index;
 
     public bool Current => _bitCollection[_index];
