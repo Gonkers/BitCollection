@@ -60,38 +60,18 @@ public class ReadOnlyBitCollection : IReadOnlyList<bool>, IEquatable<ReadOnlyBit
 
     protected int MaxIndex => Count - 1;
 
-    public bool this[int index]
+    protected bool Get(int index)
     {
-        get
-        {
-            if (index < 0 || index > MaxIndex)
-                throw new IndexOutOfRangeException($"The {nameof(index)} must be from 0 to {MaxIndex}");
+        if (index < 0 || index > MaxIndex)
+            throw new IndexOutOfRangeException($"The {nameof(index)} must be from 0 to {MaxIndex}");
 
-            // Determine the byte in the array which contains the indexed bit
-            // Shift the bits in the byte so the requested bit index is in the first bit position
-            // Check if the first bit is 1 or 0 and return true or false respectively
-            return ((byte)(_bytes[index / BitsInAByte] >> (index % BitsInAByte)) & 0b0000_0001) == 0b0000_0001;
-        }
-        //set // considering making this read only... Write once, read many ?
-        //{
-        //    if (index < 0 || index > MaxIndex)
-        //        throw new IndexOutOfRangeException($"The {nameof(index)} must be from 0 to {MaxIndex}");
-
-        //    // Locate the bit we need to change and create a bitmask
-        //    var bitmask = (byte)(0b0000_0001 << (index % BitsInAByte));
-
-        //    if (value)
-        //    {
-        //        // Using the bitmask set the indexed bit value to true
-        //        _bytes[index / BitsInAByte] |= bitmask;
-        //    }
-        //    else
-        //    {
-        //        // Using the inverted bitmask set the indexed bit value to false
-        //        _bytes[index / BitsInAByte] &= (byte)~bitmask;
-        //    }
-        //}
+        // Determine the byte in the array which contains the indexed bit
+        // Shift the bits in the byte so the requested bit index is in the first bit position
+        // Check if the first bit is 1 or 0 and return true or false respectively
+        return ((byte)(_bytes[index / BitsInAByte] >> (index % BitsInAByte)) & 0b0000_0001) == 0b0000_0001;
     }
+
+    public bool this[int index] => Get(index);
 
     public string ToBase64String() => Convert.ToBase64String(new ReadOnlySpan<byte>(_bytes, 0, TotalBytes));
     public override string ToString() => ToBase64String();
